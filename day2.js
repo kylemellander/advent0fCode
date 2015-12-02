@@ -12,25 +12,6 @@ function sqFtForPackage(l, h, w) {
   return surface(l, h, w) + slack(l, h, w);
 }
 
-function readPackages(file) {
-  fs.readFile(file, 'utf8', function(err, data) {
-    if (err) {
-      return console.log(err);
-    }
-
-    var rawDataArray = data.split("\n");
-
-    var packages = rawDataArray.map(function(package) {
-      return package.split("x");
-    });
-
-    packages.pop();
-
-    console.log(packages);
-    return packages;
-  });
-}
-
 function calculateSqFtForAllPackages(file) {
   var packages;
   var result = 0;
@@ -51,7 +32,7 @@ function calculateSqFtForAllPackages(file) {
       result += sqFtForPackage(package[0], package[1], package[2]);
     });
 
-    console.log(result);
+    console.log("Square Feet of Wrapping Paper Required: " + result);
   });
 }
 
