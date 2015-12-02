@@ -8,13 +8,33 @@ function slack(l, h, w) {
   return Math.min(l*w, l*h, w*h);
 }
 
-function sqFtForPackage(l, h, w) {
+function bow(l, h, w) {
+  return l*w*h;
+}
+
+function ribbonForBox(l, h, w) {
+  return 2 * (l + h + w - Math.max(l, h, w));
+}
+
+function sqFtForPackage(arr) {
+  var l = parseInt(arr[0]);
+  var h = parseInt(arr[1]);
+  var w = parseInt(arr[2]);
   return surface(l, h, w) + slack(l, h, w);
+}
+
+function totalRibbon(arr) {
+  var l = parseInt(arr[0]);
+  var h = parseInt(arr[1]);
+  var w = parseInt(arr[2]);
+  return bow(l, h, w) + ribbonForBox(l, h, w);
 }
 
 function calculateSqFtForAllPackages(file) {
   var packages;
-  var result = 0;
+  var wrappingPaper = 0;
+  var ribbon = 0;
+
   fs.readFile(file, 'utf8', function(err, data) {
     if (err) {
       return console.log(err);
@@ -29,10 +49,12 @@ function calculateSqFtForAllPackages(file) {
     packages.pop();
 
     packages.forEach(function(package) {
-      result += sqFtForPackage(package[0], package[1], package[2]);
+      wrappingPaper += sqFtForPackage(package);
+      ribbon += totalRibbon(package);
     });
 
-    console.log("Square Feet of Wrapping Paper Required: " + result);
+    console.log("Square Feet of Wrapping Paper Required: " + wrappingPaper);
+    console.log("Length of Ribbon Required: " + ribbon + " feet");
   });
 }
 
