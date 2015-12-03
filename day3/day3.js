@@ -18,7 +18,6 @@ function deliver(file) {
     }
 
     var directions = data.split("");
-    directions.pop();
 
     directions.forEach(function(move) {
       location = goToNewHouse(move, location);
@@ -26,8 +25,6 @@ function deliver(file) {
       if (!(luckyHouses.contains(location))) {
         luckyHouses.push(location);
       }
-
-      console.log(luckyHouses.length);
     });
 
     return console.log(luckyHouses.length);
@@ -48,4 +45,39 @@ function goToNewHouse(move, location) {
 
 }
 
+function santaAndRobotDeliver(file) {
+  fs.readFile(file, 'utf8', function(err, data) {
+    var santaLocation = [0,0];
+    var robotLocation = [0,0];
+    var luckyHouses = [[0,0]];
+    var santa = true;
+    var location;
+
+    if (err) {
+      return console.log(err);
+    }
+
+    var directions = data.split("");
+
+    directions.forEach(function(move) {
+      if (santa) {
+        location = goToNewHouse(move, santaLocation);
+        santaLocation = location;
+        santa = false;
+      } else {
+        location = goToNewHouse(move, robotLocation);
+        robotLocation = location;
+        santa = true;
+      }
+
+      if (!(luckyHouses.contains(location))) {
+        luckyHouses.push(location);
+      }
+    });
+
+    return console.log(luckyHouses.length);
+  });
+}
+
 deliver('directions.txt');
+santaAndRobotDeliver('directions.txt');
