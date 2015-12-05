@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-function findTheNiceKids(file) {
+function findTheNiceKids(file, type) {
   fs.readFile(file, 'utf8', function(err, data) {
     var count = 0;
 
@@ -10,11 +10,19 @@ function findTheNiceKids(file) {
 
     var children = data.split("\n");
 
-    children.forEach(function(kid) {
-      if (nice(kid)) {
-        count += 1;
-      }
-    });
+    if (type === "old") {
+      children.forEach(function(kid) {
+        if (nice(kid)) {
+          count += 1;
+        }
+      });
+    } else if (type === "new") {
+      children.forEach(function(kid) {
+        if (theNewNice(kid)) {
+          count += 1;
+        }
+      });
+    }
 
     console.log(count);
   });
@@ -22,6 +30,10 @@ function findTheNiceKids(file) {
 
 function nice(kid) {
   return threeVowels(kid) && doubleLetters(kid) && excludesStr(kid);
+}
+
+function theNewNice(kid) {
+  return doublePairs(kid) && sandwichLetter(kid);;
 }
 
 function threeVowels(kid) {
@@ -34,7 +46,35 @@ function doubleLetters(kid) {
 }
 
 function excludesStr(kid) {
-  return kid.indexOf("ab") === -1 && kid.indexOf("cd") === -1 && kid.indexOf("pq") === -1 && kid.indexOf("xy") === -1;
+  return  kid.indexOf("ab") === -1 &&
+          kid.indexOf("cd") === -1 &&
+          kid.indexOf("pq") === -1 &&
+          kid.indexOf("xy") === -1;
 }
 
-findTheNiceKids('children.txt');
+function doublePairs(kid) {
+  for (var i = 0; i < kid.length - 2; ++i) {
+    var str = kid.substring(i, i + 2);
+    var kidArray = kid.split(str);
+    if (kidArray.length >= 3) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function sandwichLetter(kid) {
+  for (var i = 0; i < kid.length - 2; ++i) {
+    var str = kid.substring(i, i + 3);
+    if (str[0] === str[2]) {
+      return true;
+    }
+  }
+
+  return false;
+
+}
+
+findTheNiceKids('children.txt', "old");
+findTheNiceKids('children.txt', "new");
