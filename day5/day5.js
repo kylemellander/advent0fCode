@@ -46,10 +46,7 @@ function doubleLetters(kid) {
 }
 
 function excludesStr(kid) {
-  return  kid.indexOf("ab") === -1 &&
-          kid.indexOf("cd") === -1 &&
-          kid.indexOf("pq") === -1 &&
-          kid.indexOf("xy") === -1;
+  return !(/ab|cd|pq|xy/).test(kid);
 }
 
 function doublePairs(kid) {
