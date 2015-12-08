@@ -139,7 +139,5 @@ function wireSystem(file, override, num) {
   return instructions["a"];
 }
 
-// wireSystem('system.txt')
 console.log(wireSystem('system.txt', "", 0));
 console.log(wireSystem('system.txt', "b", wireSystem('system.txt', "", 0)));
-// console.log(wireSystem('test.txt'));
