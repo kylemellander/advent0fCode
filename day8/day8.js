@@ -1,31 +1,23 @@
 var fs = require('fs');
 
 function countStringCode(c) {
-  if (c.indexOf("\\") !== -1) {
-    var i = c.match(/\\/g).length;
-    return c.length + i + 2;
-  } else if (c.indexOf("\"") !== -1) {
-    var i = c.match(/\"/g).length;
-    return c.length + i + 2;
-  } else if (c.match(/[\x00-\xzz]/g)) {
-    var i = c.match(/[\x00-\xzz]/g).length;
-    return c.length + i * 3 + 2;
-  } else {
-    return c.length + 2;
-  }
-}
-
-function countStringDisplay(c) {
   return c.length;
 }
 
-console.log(countStringCode(""));
-console.log(countStringCode("abc"));
-console.log(countStringCode("aaa\"aaa"));
-console.log(countStringCode("\\\\\\"));
-console.log(countStringCode("\x27"));
-console.log(countStringDisplay(""));
-console.log(countStringDisplay("abc"));
-console.log(countStringDisplay("aaa\"aaa"));
-console.log(countStringDisplay("\\\\\\"));
-console.log(countStringDisplay("\x27"));
+function countStringDisplay(c) {
+  return c.replace(/\\\\|\\"|\\x[a-f0-9]{2}/g, "a").length - 2;
+}
+
+function spaceSaved(file) {
+  var data = fs.readFileSync(file, 'utf-8').trimRight().split('\n');
+  var result = 0;
+
+  data.forEach(function(line) {
+    result += countStringCode(line);
+    result -= countStringDisplay(line);
+  });
+
+  return result;
+}
+
+console.log("Space Saved: " + spaceSaved('sleigh.txt'));
