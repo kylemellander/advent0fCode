@@ -21,6 +21,5 @@ function elfSpeak(num, count) {
   return arr.length;
 }
 
-
 console.log(elfSpeak(3113322113, 40));
 console.log(elfSpeak(3113322113, 50));
