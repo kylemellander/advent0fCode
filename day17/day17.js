@@ -1,10 +1,11 @@
 var fs = require('fs');
 
 function eggNogCombos(file, amount, minimum) {
-  var data = fs.readFileSync(file, 'utf-8').trimRight().split('\n').map(function(x) {return parseInt(x);});
+  var data = fs.readFileSync(file, 'utf-8').trimRight().split('\n')
+               .map(function(x) {return parseInt(x);});
   var binary = "";
   var bottles = [];
-  var smallestBottleCount;
+  var smallestCount;
 
   for (var i = 0; i < data.length; i++) {
     binary += "1";
@@ -22,11 +23,14 @@ function eggNogCombos(file, amount, minimum) {
       filled += data[index] * val;
     });
 
-    if (filled === amount) bottles.push(bottleCount);
-    if (filled === amount && (!smallestBottleCount || smallestBottleCount > bottleCount)) smallestBottleCount = bottleCount;
+    if (filled === amount) {
+      bottles.push(bottleCount);
+      if (!smallestCount || smallestCount > bottleCount)
+        smallestCount = bottleCount;
+    }
   }
-  
-  return minimum ? bottles.filter(function(x) {return x === smallestBottleCount;}).length : bottles.length;
+
+  return minimum ? bottles.filter(function(x){return x === smallestCount;}).length : bottles.length;
 }
 
 console.log(eggNogCombos('input.txt', 150));

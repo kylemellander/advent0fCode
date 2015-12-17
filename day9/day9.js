@@ -2,14 +2,6 @@ var fs = require('fs');
 var result = [];
 var usedCities = [];
 
-function compare(a,b) {
-  if (a.distance < b.distance)
-    return -1;
-  if (a.distance > b.distance)
-    return 1;
-  return 0;
-}
-
 function permute(cities) {
 
   var i, city;
